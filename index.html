@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxo · Vaquinha Vivace 🐾</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f5ede8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      padding: 0 0.5rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      color: #2d1b12;
+    }
+
+    .header h1 i {
+      color: #d9784b;
+      margin-right: 10px;
+    }
+
+    .header .sub {
+      color: #5f4a3c;
+      background: #ede3dc;
+      display: inline-block;
+      padding: 0.3rem 1.5rem;
+      border-radius: 60px;
+      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      margin-top: 6px;
+    }
+
+    .header .date {
+      color: #7a6456;
+      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+      margin-top: 4px;
+    }
+
+    .fluxo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      background: white;
+      border-radius: 40px;
+      padding: clamp(1rem, 3vw, 2rem);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+      border: 1px solid #f0e3da;
+    }
+
+    .etapa {
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 2vw, 16px);
+      background: #fcf8f5;
+      padding: clamp(0.6rem, 1.5vw, 0.9rem) clamp(0.8rem, 2vw, 1.5rem);
+      border-radius: 60px;
+      border-left: 6px solid #d9784b;
+      transition: 0.3s ease;
+      flex-wrap: wrap;
+    }
+
+    .etapa.concluida {
+      border-left-color: #4a9e7a;
+      background: #f4faf7;
+    }
+
+    .etapa .foto-container {
+      width: clamp(40px, 6vw, 50px);
+      height: clamp(40px, 6vw, 50px);
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 3px solid #d9784b;
+      box-shadow: 0 4px 12px rgba(217, 120, 75, 0.2);
+      transition: 0.3s ease;
+      background: #f0e3da;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .etapa.concluida .foto-container {
+      border-color: #4a9e7a;
+      box-shadow: 0 4px 12px rgba(74, 158, 122, 0.3);
+    }
+
+    .etapa .foto-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .etapa .info {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .etapa .info .titulo {
+      font-weight: 600;
+      color: #2d1b12;
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .etapa .info .titulo i {
+      color: #b58265;
+      font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    }
+
+    .etapa .info .desc {
+      font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+      color: #7a6456;
+    }
+
+    .etapa .status-badge {
+      padding: 0.2rem 1rem;
+      border-radius: 60px;
+      font-size: clamp(0.55rem, 1.2vw, 0.7rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: #f0e3da;
+      color: #6b4f3b;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .etapa .status-badge.concluido {
+      background: #b3d9c6;
+      color: #1d5a3e;
+    }
+
+    .etapa .status-badge.pendente {
+      background: #f7d9c4;
+      color: #a3512b;
+    }
+
+    .etapa .icone-status {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      width: clamp(24px, 3vw, 30px);
+      text-align: center;
+      color: #d9784b;
+      flex-shrink: 0;
+    }
+
+    .etapa.concluida .icone-status {
+      color: #4a9e7a;
+    }
+
+    .seta {
+      text-align: center;
+      color: #cbb5a8;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      padding: 2px 0;
+    }
+
+    .rodape {
+      margin-top: 2rem;
+      text-align: center;
+      color: #7a6456;
+      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+      background: white;
+      border-radius: 40px;
+      padding: 0.8rem 1.5rem;
+      border: 1px solid #f0e3da;
+    }
+
+    .rodape i {
+      color: #d9784b;
+      margin: 0 4px;
+    }
+
+    .toggle-area {
+      margin-top: 1.8rem;
+      display: flex;
+      justify-content: center;
+      gap: clamp(8px, 2vw, 12px);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toggle-area button {
+      border: none;
+      color: white;
+      padding: clamp(0.5rem, 1.2vw, 0.6rem) clamp(1.2rem, 3vw, 1.8rem);
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .toggle-area button:hover {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+
+    .toggle-area button:active {
+      transform: scale(0.92);
+    }
+
+    .toggle-area button.concluir {
+      background: #4a7b62;
+    }
+
+    .toggle-area button.concluir:hover {
+      background: #2f5a45;
+    }
+
+    .toggle-area button.reset {
+      background: #8f6b58;
+    }
+
+    .toggle-area button.reset:hover {
+      background: #6f4f3e;
+    }
+
+    .toggle-area .info-text {
+      font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+      color: #7a6456;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toggle-area .info-text i {
+      color: #d9784b;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .etapa.concluida .foto-container {
+      animation: pulse 1.5s ease-in-out 1;
+    }
+
+    .etapa.adoção {
+      border-left-color: #d4a06a;
+      background: linear-gradient(135deg, #fcf8f5 0%, #f8f0e8 100%);
+    }
+
+    .etapa.adoção.concluida {
+      border-left-color: #f5b06b;
+      background: linear-gradient(135deg, #f4faf7 0%, #e8f5ee 100%);
+    }
+
+    .etapa.adoção .foto-container {
+      border-color: #d4a06a;
+      box-shadow: 0 4px 12px rgba(212, 160, 106, 0.3);
+    }
+
+    .etapa.adoção.concluida .foto-container {
+      border-color: #f5b06b;
+      box-shadow: 0 4px 20px rgba(245, 176, 107, 0.4);
+    }
+
+    .etapa.adoção .status-badge.concluido {
+      background: #f5d6b0;
+      color: #8a5a2e;
+    }
+
+    .etapa.adoção .status-badge.pendente {
+      background: #f5e0d0;
+      color: #8a5a2e;
+    }
+
+    .etapa.lar-temporario {
+      border-left-color: #7fb0c9;
+      background: #f0f6fa;
+    }
+
+    .etapa.lar-temporario.concluida {
+      border-left-color: #4a9e9e;
+      background: #eef7f5;
+    }
+
+    .etapa.lar-temporario .foto-container {
+      border-color: #7fb0c9;
+      box-shadow: 0 4px 12px rgba(127, 176, 201, 0.3);
+    }
+
+    .etapa.lar-temporario.concluida .foto-container {
+      border-color: #4a9e9e;
+      box-shadow: 0 4px 12px rgba(74, 158, 158, 0.3);
+    }
+
+    .etapa.lar-temporario .status-badge.concluido {
+      background: #b5d4d4;
+      color: #1d6b6b;
+    }
+
+    .etapa.lar-temporario .status-badge.pendente {
+      background: #d0e3ed;
+      color: #3a6b7a;
+    }
+
+    /* Responsividade para telas muito pequenas */
+    @media (max-width: 480px) {
+      .etapa {
+        flex-direction: row;
+        padding: 0.6rem 0.8rem;
+        gap: 8px;
+      }
+      
+      .etapa .info {
+        min-width: 80px;
+        flex: 1;
+      }
+      
+      .etapa .status-badge {
+        font-size: 0.5rem;
+        padding: 0.15rem 0.6rem;
+      }
+      
+      .toggle-area {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .toggle-area button {
+        justify-content: center;
+        padding: 0.6rem 1rem;
+        width: 100%;
+      }
+    }
+
+    /* Scroll suave */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1><i class="fas fa-paw"></i> Fluxo · Vivace</h1>
+    <div class="sub"><i class="fas fa-calendar-alt"></i> Gato Vivace · Resgatado</div>
+    <div class="date"><i class="far fa-calendar-check"></i> Vaquinha criada em: 20/06/2026</div>
+  </div>
+
+  <div class="fluxo" id="fluxoContainer"></div>
+
+  <div class="toggle-area">
+    <button class="concluir" id="btnAvancar">
+      <i class="fas fa-check"></i> Avançar etapa
+    </button>
+    <button class="reset" id="btnReset">
+      <i class="fas fa-undo-alt"></i> Reiniciar fluxo
+    </button>
+    <span class="info-text">
+      <i class="fas fa-sync-alt"></i> dados salvos automaticamente
+    </span>
+  </div>
+
+  <div class="rodape">
+    <i class="fas fa-heart"></i> Cada etapa concluída = um passo mais perto do lar definitivo 
+    <i class="fas fa-heart"></i>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    const STORAGE_KEY = 'vivace_fluxo_status';
+    
+    const etapasBase = [
+      { 
+        id: 1, 
+        titulo: 'Castração', 
+        desc: 'R$ 150,00 · procedimento cirúrgico', 
+        concluida: false,
+        icon: 'fa-scalpel'
+      },
+      { 
+        id: 2, 
+        titulo: 'Consulta veterinária', 
+        desc: 'R$ 120,00 · avaliação geral', 
+        concluida: false,
+        icon: 'fa-stethoscope'
+      },
+      { 
+        id: 3, 
+        titulo: 'Teste FIV/FeLV', 
+        desc: 'R$ 135,00 · exames laboratoriais', 
+        concluida: false,
+        icon: 'fa-vial'
+      },
+      { 
+        id: 4, 
+        titulo: 'Vacina antirrábica', 
+        desc: 'R$ 80,00 · primeira dose', 
+        concluida: false,
+        icon: 'fa-syringe'
+      },
+      { 
+        id: 5, 
+        titulo: 'Vacina V3', 
+        desc: 'R$ 120,00 · quádrupla viral', 
+        concluida: false,
+        icon: 'fa-syringe'
+      },
+      { 
+        id: 6, 
+        titulo: '🏠 Lar temporário', 
+        desc: 'R$ 361,00 · acolhimento até a adoção', 
+        concluida: false,
+        icon: 'fa-home',
+        isLarTemporario: true
+      },
+      { 
+        id: 7, 
+        titulo: '❤️ Adoção feita com sucesso!', 
+        desc: '🏡 Vivace encontrou um lar definitivo!', 
+        concluida: false,
+        icon: 'fa-heart',
+        isAdocao: true
+      }
+    ];
+
+    // Carregar ou inicializar dados
+    function carregarDados() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // Mesclar com base para garantir que todas as propriedades existam
+          return etapasBase.map((base, index) => ({
+            ...base,
+            concluida: parsed[index]?.concluida ?? base.concluida
+          }));
+        } catch (e) {
+          console.warn('Erro ao carregar dados, usando padrão');
+          return etapasBase.map(e => ({ ...e }));
+        }
+      }
+      return etapasBase.map(e => ({ ...e }));
+    }
+
+    let etapas = carregarDados();
+
+    function salvarDados() {
+      const dadosParaSalvar = etapas.map(e => ({ concluida: e.concluida }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosParaSalvar));
+    }
+
+    const container = document.getElementById('fluxoContainer');
+
+    const FOTO_GATO = 'gato.webp';
+
+    function renderizar() {
+      container.innerHTML = '';
+      etapas.forEach((etapa, index) => {
+        const divEtapa = document.createElement('div');
+        const classes = ['etapa'];
+        if (etapa.concluida) classes.push('concluida');
+        if (etapa.isAdocao) classes.push('adoção');
+        if (etapa.isLarTemporario) classes.push('lar-temporario');
+        divEtapa.className = classes.join(' ');
+
+        const fotoDiv = document.createElement('div');
+        fotoDiv.className = 'foto-container';
+        fotoDiv.innerHTML = `<img src="${FOTO_GATO}" alt="Vivace" loading="lazy">`;
+        divEtapa.appendChild(fotoDiv);
+
+        const iconStatus = document.createElement('div');
+        iconStatus.className = 'icone-status';
+        iconStatus.innerHTML = etapa.concluida ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-clock"></i>';
+        divEtapa.appendChild(iconStatus);
+
+        const info = document.createElement('div');
+        info.className = 'info';
+        info.innerHTML = `
+          <div class="titulo">
+            <i class="fas ${etapa.icon || 'fa-paw'}"></i>
+            ${etapa.titulo}
+          </div>
+          <div class="desc">${etapa.desc}</div>
+        `;
+        divEtapa.appendChild(info);
+
+        const badge = document.createElement('span');
+        badge.className = 'status-badge ' + (etapa.concluida ? 'concluido' : 'pendente');
+        badge.textContent = etapa.concluida ? '✅ concluído' : '⏳ pendente';
+        divEtapa.appendChild(badge);
+
+        container.appendChild(divEtapa);
+
+        if (index < etapas.length - 1) {
+          const seta = document.createElement('div');
+          seta.className = 'seta';
+          seta.innerHTML = '<i class="fas fa-arrow-down"></i>';
+          container.appendChild(seta);
+        }
+      });
+    }
+
+    function avancarEtapa() {
+      const btn = document.getElementById('btnAvancar');
+      
+      for (let i = 0; i < etapas.length; i++) {
+        if (!etapas[i].concluida) {
+          etapas[i].concluida = true;
+          salvarDados();
+          renderizar();
+          
+          if (etapas[i].isAdocao) {
+            btn.innerHTML = '<i class="fas fa-trophy"></i> Lar encontrado! 🎉';
+            btn.style.background = '#f5b06b';
+            setTimeout(() => {
+              btn.innerHTML = '<i class="fas fa-check"></i> Avançar etapa';
+              btn.style.background = '#4a7b62';
+            }, 2500);
+          }
+          return;
+        }
+      }
+      
+      // Todas as etapas concluídas
+      btn.innerHTML = '<i class="fas fa-check-circle"></i> Tudo concluído! ✅';
+      btn.style.background = '#4a9e7a';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check"></i> Avançar etapa';
+        btn.style.background = '#4a7b62';
+      }, 2000);
+    }
+
+    function resetarFluxo() {
+      if (confirm('Tem certeza que deseja reiniciar todas as etapas?')) {
+        etapas.forEach(e => e.concluida = false);
+        salvarDados();
+        renderizar();
+        const btn = document.getElementById('btnAvancar');
+        btn.innerHTML = '<i class="fas fa-check"></i> Avançar etapa';
+        btn.style.background = '#4a7b62';
+      }
+    }
+
+    // Event listeners
+    document.getElementById('btnAvancar').addEventListener('click', avancarEtapa);
+    document.getElementById('btnReset').addEventListener('click', resetarFluxo);
+
+    // Renderizar inicial
+    renderizar();
+
+    // Salvar automaticamente ao fechar a página
+    window.addEventListener('beforeunload', function() {
+      salvarDados();
+    });
+
+    // Salvar periodicamente (a cada 30 segundos)
+    setInterval(salvarDados, 30000);
+  })();
+</script>
+</body>
+</html>
